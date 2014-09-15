@@ -10,8 +10,8 @@ class Board
   def display
     puts "+- - - - - -+"
     for row in 0..BOARD_MAX_INDEX
-      Print "| "
-      for col in 0..Board_Max_INDEX
+      print "| "
+      for col in 0..BOARD_MAX_INDEX
         s = @board[row][col]
         if s == EMPTY_POS
           print col + (row * 3) + 1
@@ -25,7 +25,7 @@ class Board
   end
 
   def ask_player_for_move(first_player)
-    played = failed
+    played = false
     while not played
       puts "Player " + first_player + ": Where would you like to play?"
       move = gets.to_i - 1
@@ -38,7 +38,7 @@ class Board
     end
   end
 
-  def validate_poition(row,col)
+  def validate_position(row,col)
     if row <= @board.size and col <= @board.size
       if @board[row][col] == EMPTY_POS
         return true
@@ -51,18 +51,20 @@ class Board
     return false
   end
 
-  while not b.board_full() and not b.winner()
-    b.ask_player_for_move(first_player)
-    first_player = b.get_next_turn()
-    b.display()
+  def get_next_move
+    while not board_full() and not winner()
+      current_player = get_next_player()
+      ask_player_for_move(current_player)
+      display()
+    end
+    #??????????????????
+    if winner()
+      puts "Player " + current_player + " WINS!!"
+    else
+      puts "Tie Game."
+    end
+    puts "Game Over"
   end
-??????????????????
-  if b.winner()
-    puts "Player " + b.get_next_turn() + " WINS!!"
-  else
-    puts "Tie Game."
-  end
-  puts "Game Over"
 
   def board_full
     for row in 0..BOARD_MAX_INDEX
@@ -77,7 +79,7 @@ class Board
 
 
   def winner
-    winner = winner_row()
+    winner = winner_rows()
     if winner
       return winner
     end
@@ -109,7 +111,7 @@ class Board
   def winner_cols
     for col_index in 0..BOARD_MAX_INDEX
       first_symbol = @board[0][col_index]
-      for row_index in 1..BOARD_MAX_INDEDX
+      for row_index in 1..BOARD_MAX_INDEX
         if first_symbol != @board[row_index][col_index]
           break
         elsif row_index == BOARD_MAX_INDEX and first_symbol != EMPTY_POS
@@ -143,7 +145,8 @@ class Board
     end
     return
   end
-  def def_get_next_turn_method
+
+  def get_next_player
     if @current_player == 'X'
       @current_player = 'O'
     else
@@ -152,14 +155,14 @@ class Board
     return @current_player
   end
 
-  require 'board2'
-  puts "Beginning!"
-  players = [ 'X', 'O']
-  first_player = players[rand(2)]
-  b = Board.new(first_player)
-  b.display()
-  puts
-????????????????
-  
 end
 
+#require 'board2'
+puts "Beginning!\n"
+players = [ 'X', 'O']
+first_player = players[rand(2)]
+b = Board.new(first_player)
+b.display()
+b.get_next_move
+# puts 
+# ????????????????
