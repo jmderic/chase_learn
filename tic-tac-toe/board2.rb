@@ -10,8 +10,8 @@ class Board
   def display
     puts "+- - - - - -+"
     for row in 0..BOARD_MAX_INDEX
-      Print "| "
-      for col in 0..Board_Max_INDEX
+      print "| "
+      for col in 0..BOARD_MAX_INDEX
         s = @board[row][col]
         if s == EMPTY_POS
           print col + (row * 3) + 1
@@ -49,20 +49,20 @@ class Board
       puts "You don't know how to play tic-tac-toe: Pick a differnt spot"
     end
     return false
-  end
 
-  while not b.board_full() and not b.winner()
-    b.ask_player_for_move(first_player)
-    first_player = b.get_next_turn()
-    b.display()
+    while not board_full() and not winner()
+      ask_player_for_move(first_player)
+      first_player = get_next_turn()
+      display()
+    end
+    #??????????????????
+    if winner()
+      puts "Player " + get_next_turn() + " WINS!!"
+    else
+      puts "Tie Game."
+    end
+    puts "Game Over"
   end
-??????????????????
-  if b.winner()
-    puts "Player " + b.get_next_turn() + " WINS!!"
-  else
-    puts "Tie Game."
-  end
-  puts "Game Over"
 
   def board_full
     for row in 0..BOARD_MAX_INDEX
@@ -143,6 +143,7 @@ class Board
     end
     return
   end
+
   def def_get_next_turn_method
     if @current_player == 'X'
       @current_player = 'O'
@@ -152,14 +153,13 @@ class Board
     return @current_player
   end
 
-  require 'board2'
-  puts "Beginning!"
-  players = [ 'X', 'O']
-  first_player = players[rand(2)]
-  b = Board.new(first_player)
-  b.display()
-  puts
-????????????????
-  
 end
 
+#require 'board2'
+puts "Beginning!\n"
+players = [ 'X', 'O']
+first_player = players[rand(2)]
+b = Board.new(first_player)
+b.display()
+# puts 
+# ????????????????
