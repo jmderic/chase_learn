@@ -25,7 +25,7 @@ class Board
   end
 
   def ask_player_for_move(first_player)
-    played = failed
+    played = false
     while not played
       puts "Player " + first_player + ": Where would you like to play?"
       move = gets.to_i - 1
@@ -38,7 +38,7 @@ class Board
     end
   end
 
-  def validate_poition(row,col)
+  def validate_position(row,col)
     if row <= @board.size and col <= @board.size
       if @board[row][col] == EMPTY_POS
         return true
@@ -49,15 +49,17 @@ class Board
       puts "You don't know how to play tic-tac-toe: Pick a differnt spot"
     end
     return false
+  end
 
+  def get_next_move
     while not board_full() and not winner()
-      ask_player_for_move(first_player)
-      first_player = get_next_turn()
+      current_player = get_next_player()
+      ask_player_for_move(current_player)
       display()
     end
     #??????????????????
     if winner()
-      puts "Player " + get_next_turn() + " WINS!!"
+      puts "Player " + current_player + " WINS!!"
     else
       puts "Tie Game."
     end
@@ -77,7 +79,7 @@ class Board
 
 
   def winner
-    winner = winner_row()
+    winner = winner_rows()
     if winner
       return winner
     end
@@ -109,7 +111,7 @@ class Board
   def winner_cols
     for col_index in 0..BOARD_MAX_INDEX
       first_symbol = @board[0][col_index]
-      for row_index in 1..BOARD_MAX_INDEDX
+      for row_index in 1..BOARD_MAX_INDEX
         if first_symbol != @board[row_index][col_index]
           break
         elsif row_index == BOARD_MAX_INDEX and first_symbol != EMPTY_POS
@@ -144,7 +146,7 @@ class Board
     return
   end
 
-  def def_get_next_turn_method
+  def get_next_player
     if @current_player == 'X'
       @current_player = 'O'
     else
@@ -161,5 +163,6 @@ players = [ 'X', 'O']
 first_player = players[rand(2)]
 b = Board.new(first_player)
 b.display()
+b.get_next_move
 # puts 
 # ????????????????
