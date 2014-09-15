@@ -24,18 +24,24 @@ class Board
     end
   end
 
-  def ask_player_for_move(first_player)
+  def ask_player_for_move(player)
     played = false
     while not played
-      puts "Player " + first_player + ": Where would you like to play?"
-      move = gets.to_i - 1
-      col = move % @board.size
-      row = (move - col) / @board.size
-      if validate_position(row,col)
-        @board[row][col] = first_player
-        played = true
-      end
+      puts "Player " + player + ": Where would you like to play?"
+      move = gets.to_i
+      played = update_board(move, player)
     end
+  end
+
+  def update_board(move, player)
+    move = move - 1
+    col = move % @board.size
+    row = (move - col) / @board.size
+    if validate_position(row,col)
+      @board[row][col] = player
+      return true
+    end
+    return false
   end
 
   def validate_position(row,col)
@@ -157,12 +163,14 @@ class Board
 
 end
 
-#require 'board2'
-puts "Beginning!\n"
-players = [ 'X', 'O']
-first_player = players[rand(2)]
-b = Board.new(first_player)
-b.display()
-b.get_next_move
-# puts 
-# ????????????????
+if __FILE__ == $0
+  #require 'board2'
+  puts "Beginning!\n"
+  players = [ 'X', 'O']
+  first_player = players[rand(2)]
+  b = Board.new(first_player)
+  b.display()
+  b.get_next_move
+  # puts 
+  # ????????????????
+end
