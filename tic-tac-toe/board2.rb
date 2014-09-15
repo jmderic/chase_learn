@@ -57,15 +57,13 @@ class Board
     return false
   end
 
-  def get_next_move
-    while not board_full() and not winner()
-      current_player = get_next_player()
-      ask_player_for_move(current_player)
+  def play_game
+    while not board_full and not winner
+      ask_player_for_move next_player
       display()
     end
-    #??????????????????
     if winner()
-      puts "Player " + current_player + " WINS!!"
+      puts "Player " + @current_player + " WINS!!"
     else
       puts "Tie Game."
     end
@@ -152,25 +150,17 @@ class Board
     return
   end
 
-  def get_next_player
-    if @current_player == 'X'
-      @current_player = 'O'
-    else
-      @current_player = 'X'
-    end
-    return @current_player
+  def next_player
+    @current_player = @current_player == 'X' ? 'O' : 'X'
   end
 
 end
 
 if __FILE__ == $0
-  #require 'board2'
   puts "Beginning!\n"
   players = [ 'X', 'O']
   first_player = players[rand(2)]
   b = Board.new(first_player)
-  b.display()
-  b.get_next_move
-  # puts 
-  # ????????????????
+  b.display() # empty beginning board
+  b.play_game
 end
